@@ -33,18 +33,28 @@ public class GitUserSummary {
 
         public String generateSummary(String repoName) {
             StringBuilder sb = new StringBuilder();
-            if (pushCommitCount > 0)
-                sb.append(String.format("- Pushed %d commit%s to %s\n", pushCommitCount, pushCommitCount > 1 ? "s" : "", repoName));
-            if (issueOpenCount > 0)
-                sb.append(String.format("- Opened %d issue%s in %s\n", issueOpenCount, issueOpenCount > 1 ? "s" : "", repoName));
             if (starCount > 0)
                 sb.append(String.format("- Starred %d repo%s %s\n", starCount, starCount > 1 ? "s" : "", repoName));
-            if (pullRequestOpenCount > 0)
-                sb.append(String.format("- Opened %d pull request%s in %s\n", pullRequestOpenCount, pullRequestOpenCount > 1 ? "s" : "", repoName));
-            if (pullRequestCommentCount > 0)
-                sb.append(String.format("- Commented %d time%s on pull requests in %s\n", pullRequestCommentCount, pullRequestCommentCount > 1 ? "s" : "", repoName));
+            if (pushCommitCount > 0)
+                sb.append(String.format("- Pushed %d commit%s to %s\n", pushCommitCount, pushCommitCount > 1 ? "s" : "", repoName));
+            if (!pushCommitMessages.isEmpty())
+                sb.append(String.format("- Commit Messages: %s\n", pushCommitMessages));
+            if (issueOpenCount > 0)
+                sb.append(String.format("- Opened %d issue%s in %s\n", issueOpenCount, issueOpenCount > 1 ? "s" : "", repoName));
+            if (!issueOpenTitles.isEmpty())
+                sb.append(String.format("- Open Issue Titles: %s\n", issueOpenTitles));
             if (issueCommentCount > 0)
                 sb.append(String.format("- Commented on %d issue%s in %s\n", issueCommentCount, issueCommentCount > 1 ? "s" : "", repoName));
+            if (!issueCommentMessages.isEmpty())
+                sb.append(String.format("- Issue Comments: %s\n", issueCommentMessages));
+            if (pullRequestOpenCount > 0)
+                sb.append(String.format("- Opened %d pull request%s in %s\n", pullRequestOpenCount, pullRequestOpenCount > 1 ? "s" : "", repoName));
+            if (!pullRequestOpenTitles.isEmpty())
+                sb.append(String.format("- Open Pull Request titles: %s\n", pullRequestOpenTitles));
+            if (pullRequestCommentCount > 0)
+                sb.append(String.format("- Commented %d time%s on pull requests in %s\n", pullRequestCommentCount, pullRequestCommentCount > 1 ? "s" : "", repoName));
+            if (!pullRequestComments.isEmpty())
+                sb.append(String.format("- Pull Request Comments: %s\n", pullRequestComments));
             if (memberAddedCount > 0)
                 sb.append(String.format("- Added %d member%s to %s\n", memberAddedCount, memberAddedCount > 1 ? "s" : "", repoName));
 
@@ -124,7 +134,7 @@ public class GitUserSummary {
                 case "IssueCommentEvent":
                     if (eventAction.matches("created|edited")) {
                         repoActivity.incrementIssueCommentCount();
-                        String issueBody = payload.path("issue").path("body").asText();
+                        String issueBody = payload.path("comment").path("body").asText();
                         if (!issueBody.isEmpty()) repoActivity.addIssueCommentMessages(issueBody);
                     }
                     break;

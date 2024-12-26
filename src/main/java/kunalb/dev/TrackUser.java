@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 public class TrackUser {
     public static void main(String[] args) throws URISyntaxException {
         // Create objects
-        GitHttpClient gitHttpClient = new GitHttpClient();
+        CurlHttpClient curlHttpClient = new CurlHttpClient();
         GitSummaryGenerator gitSummaryGenerator = new GitSummaryGenerator();
         GitSummaryCleaner gitSummaryCleaner = new GitSummaryCleaner();
 
@@ -16,7 +16,7 @@ public class TrackUser {
 
         // Get User's recent events
         String githubUserName = args[0];
-        String gitResponse = gitHttpClient.getUserEvents(githubUserName);
+        String gitResponse = curlHttpClient.getUserEvents(githubUserName);
 
         // Filter and summarise User stats
         String userSummary = gitSummaryGenerator.getUserSummary(gitResponse);
@@ -24,5 +24,9 @@ public class TrackUser {
         //Clean User Summary
         String cleanSummary = gitSummaryCleaner.cleanGithubSummary(userSummary);
         System.out.println(cleanSummary);
+
+        // Call LLM
+        String output = curlHttpClient.getLlmResponse(cleanSummary);
+        System.out.println(output);
     }
 }

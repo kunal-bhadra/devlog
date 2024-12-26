@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class GitUserSummary {
+public class GitSummaryGenerator {
 
     private static final Logger LOGGER = Logger.getLogger(
             Thread.currentThread().getStackTrace()[0].getClassName());
@@ -34,29 +34,29 @@ public class GitUserSummary {
         public String generateSummary(String repoName) {
             StringBuilder sb = new StringBuilder();
             if (starCount > 0)
-                sb.append(String.format("- Starred %d repo%s %s\n", starCount, starCount > 1 ? "s" : "", repoName));
+                sb.append(String.format("Event: Starred, Repo: %s, Count: %d\n", repoName, starCount));
             if (pushCommitCount > 0)
-                sb.append(String.format("- Pushed %d commit%s to %s\n", pushCommitCount, pushCommitCount > 1 ? "s" : "", repoName));
+                sb.append(String.format("Event: Pushed, Repo: %s, Count: %d\n", repoName, pushCommitCount));
             if (!pushCommitMessages.isEmpty())
-                sb.append(String.format("- Commit Messages: %s\n", pushCommitMessages));
+                sb.append(String.format("Commit Messages: %s\n", pushCommitMessages));
             if (issueOpenCount > 0)
-                sb.append(String.format("- Opened %d issue%s in %s\n", issueOpenCount, issueOpenCount > 1 ? "s" : "", repoName));
+                sb.append(String.format("Event: Issue Opened, Repo: %s, Count: %d\n", repoName, issueOpenCount));
             if (!issueOpenTitles.isEmpty())
-                sb.append(String.format("- Open Issue Titles: %s\n", issueOpenTitles));
+                sb.append(String.format("Issue Titles: %s\n", issueOpenTitles));
             if (issueCommentCount > 0)
-                sb.append(String.format("- Commented on %d issue%s in %s\n", issueCommentCount, issueCommentCount > 1 ? "s" : "", repoName));
+                sb.append(String.format("Event: Commented, Repo: %s, Count: %d\n", repoName, issueCommentCount));
             if (!issueCommentMessages.isEmpty())
-                sb.append(String.format("- Issue Comments: %s\n", issueCommentMessages));
+                sb.append(String.format("Issue Comments: %s\n", issueCommentMessages));
             if (pullRequestOpenCount > 0)
-                sb.append(String.format("- Opened %d pull request%s in %s\n", pullRequestOpenCount, pullRequestOpenCount > 1 ? "s" : "", repoName));
+                sb.append(String.format("Event: PR Opened, Repo: %s, Count: %d\n", repoName, pullRequestOpenCount));
             if (!pullRequestOpenTitles.isEmpty())
-                sb.append(String.format("- Open Pull Request titles: %s\n", pullRequestOpenTitles));
+                sb.append(String.format("PR Titles: %s\n", pullRequestOpenTitles));
             if (pullRequestCommentCount > 0)
-                sb.append(String.format("- Commented %d time%s on pull requests in %s\n", pullRequestCommentCount, pullRequestCommentCount > 1 ? "s" : "", repoName));
+                sb.append(String.format("Event: Commented, Repo: %s, Count: %d\n", repoName, pullRequestCommentCount));
             if (!pullRequestComments.isEmpty())
-                sb.append(String.format("- Pull Request Comments: %s\n", pullRequestComments));
+                sb.append(String.format("PR Comments: %s\n", pullRequestComments));
             if (memberAddedCount > 0)
-                sb.append(String.format("- Added %d member%s to %s\n", memberAddedCount, memberAddedCount > 1 ? "s" : "", repoName));
+                sb.append(String.format("Event: Member Added, Repo: %s, Count: %d\n", repoName, memberAddedCount));
 
             return sb.toString();
         }
@@ -185,7 +185,7 @@ public class GitUserSummary {
         return sb.toString();
     }
 
-    public void listUserSummary(String responseString) {
+    public String getUserSummary(String responseString) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode root = mapper.readTree(responseString);
@@ -196,11 +196,12 @@ public class GitUserSummary {
             } else {
                 updateActivitySummary(root);
             }
-            System.out.println(generateSummary());
+            return generateSummary();
         } catch (IOException e) {
             LOGGER.severe("Error: Could not decode JSON response: " + e.getMessage());
         } catch (Exception e) {
             LOGGER.severe("An unexpected error occurred: " + e.getMessage());
         }
+        return responseString;
     }
 }

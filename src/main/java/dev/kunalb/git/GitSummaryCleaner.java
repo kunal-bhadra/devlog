@@ -1,4 +1,4 @@
-package kunalb.dev.git;
+package dev.kunalb.git;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

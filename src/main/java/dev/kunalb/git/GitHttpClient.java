@@ -1,4 +1,4 @@
-package kunalb.dev.git;
+package dev.kunalb.git;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

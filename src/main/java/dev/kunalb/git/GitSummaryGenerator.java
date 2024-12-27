@@ -1,4 +1,4 @@
-package kunalb.dev.git;
+package dev.kunalb.git;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

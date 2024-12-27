@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>kunalb.dev</groupId>
+  <groupId>dev.kunalb</groupId>
   <artifactId>devlog</artifactId>
   <version>1.0.0</version>
 
@@ -13,7 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>21</maven.compiler.release>
-    <exec.mainClass>kunalb.dev.GitInsight</exec.mainClass>
+    <exec.mainClass>dev.kunalb.GitInsight</exec.mainClass>
   </properties>
 
   <dependencies>

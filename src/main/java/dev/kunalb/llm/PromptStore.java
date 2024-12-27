@@ -1,4 +1,4 @@
-package kunalb.dev.git;
+package dev.kunalb.llm;
 
 public class PromptStore {
 

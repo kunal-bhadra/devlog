@@ -1,11 +1,10 @@
-package kunalb.dev;
+package dev.kunalb;
 
-import kunalb.dev.git.GitHttpClient;
-import kunalb.dev.git.GitSummaryCleaner;
-import kunalb.dev.git.GitSummaryGenerator;
-import kunalb.dev.llm.LlmHttpClient;
-import kunalb.dev.llm.LlmParser;
-import org.springframework.boot.SpringApplication;
+import dev.kunalb.git.GitHttpClient;
+import dev.kunalb.git.GitSummaryCleaner;
+import dev.kunalb.git.GitSummaryGenerator;
+import dev.kunalb.llm.LlmHttpClient;
+import dev.kunalb.llm.LlmParser;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

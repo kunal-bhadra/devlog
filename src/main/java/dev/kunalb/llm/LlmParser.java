@@ -1,4 +1,4 @@
-package kunalb.dev.llm;
+package dev.kunalb.llm;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

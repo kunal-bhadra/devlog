@@ -1,7 +1,6 @@
-package kunalb.dev.llm;
+package dev.kunalb.llm;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import kunalb.dev.git.PromptStore;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

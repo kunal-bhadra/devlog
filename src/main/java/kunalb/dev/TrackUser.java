@@ -1,13 +1,15 @@
 package kunalb.dev;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class TrackUser {
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException, IOException {
         // Create objects
         CurlHttpClient curlHttpClient = new CurlHttpClient();
         GitSummaryGenerator gitSummaryGenerator = new GitSummaryGenerator();
         GitSummaryCleaner gitSummaryCleaner = new GitSummaryCleaner();
+        LlmParser llmParser = new LlmParser();
 
         // Check for valid argument
         if (args == null) {
@@ -16,6 +18,7 @@ public class TrackUser {
 
         // Get User's recent events
         String githubUserName = args[0];
+        String llmPersona = args[1];
         String gitResponse = curlHttpClient.getUserEvents(githubUserName);
 
         // Filter and summarise User stats
@@ -26,7 +29,11 @@ public class TrackUser {
         System.out.println(cleanSummary);
 
         // Call LLM
-        String output = curlHttpClient.getLlmResponse(cleanSummary);
-        System.out.println(output);
+        String output = curlHttpClient.getLlmResponse(llmPersona, cleanSummary);
+
+        // Parse LLM output
+        String llmOutput = llmParser.extractTextFromLLMOutput(output);
+        System.out.println("LLM Output: " + llmOutput);
+
     }
 }

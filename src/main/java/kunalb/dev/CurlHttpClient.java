@@ -1,6 +1,8 @@
 package kunalb.dev;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import kunalb.dev.resources.promptStore;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -19,9 +21,10 @@ public class CurlHttpClient {
 
     private static final Logger LOGGER = Logger.getLogger(
             Thread.currentThread().getStackTrace()[0].getClassName() );
+    private static final int HTTP_TOO_MANY_REQUESTS = 429;
 
     private static final HttpClient client = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(30))
+            .connectTimeout(Duration.ofSeconds(20))
             .build();
 
     Dotenv dotenv = Dotenv.load();
@@ -77,36 +80,38 @@ public class CurlHttpClient {
         }
     }
 
-    protected String getLlmResponse(String summary) throws URISyntaxException {
+    protected String getLlmResponse(String persona, String summary) throws IOException, URISyntaxException {
         String geminiKey = dotenv.get("GEMINI_ACCESS_KEY");
+        String systemPrompt = promptStore.systemPrompt;
+        String inputPrompt = String.format(promptStore.inputPrompt, persona, summary);
+
         HttpRequest geminiRequest = HttpRequest.newBuilder()
                 .uri(new URI(String.format("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=%s", geminiKey)))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(String.format("""
-                        {
-                          "contents": [{
-                            "parts":[{"text": "From the following summary of the recent public GitHub events of a user, tell me how would he be as a potential SWE in a company. Summary: %s"}]
-                            }]
-                           }
-                        """, summary)))
+                .POST(HttpRequest.BodyPublishers.ofString(String.format("{ %s,%s }", systemPrompt, inputPrompt)))
                 .build();
 
         CompletableFuture<HttpResponse<String>> geminiAsyncResponse = client.sendAsync(geminiRequest, HttpResponse.BodyHandlers.ofString());
-        int statusCode = 0;
-        String response = null;
+        int geminiStatusCode;
+        String geminiResponse;
         try {
-            statusCode = geminiAsyncResponse.thenApply(HttpResponse::statusCode).get(30, TimeUnit.SECONDS);
-            response = geminiAsyncResponse.thenApply(HttpResponse::body).get(30, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            LOGGER.severe("Gemini API Exception: " + e);
-        } catch (ExecutionException | TimeoutException e) {
-            throw new RuntimeException(e);
+            geminiStatusCode = geminiAsyncResponse.thenApply(HttpResponse::statusCode).get(15, TimeUnit.SECONDS);
+            geminiResponse = geminiAsyncResponse.thenApply(HttpResponse::body).get(15, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            String errorMessage = "Gemini API Exception: " + e;
+            LOGGER.severe(errorMessage);
+            throw new IOException(errorMessage);
         }
 
-        if (statusCode == HttpURLConnection.HTTP_OK) {
-            return response;
+        if (geminiStatusCode == HttpURLConnection.HTTP_OK) {
+            return geminiResponse;
+        } else if (geminiStatusCode == HTTP_TOO_MANY_REQUESTS) {
+            LOGGER.severe("Gemini API: Exhausted completely; no more requests");
+            throw new IOException("Gemini API: Too many requests");
         } else {
-            throw new RuntimeException("POST to Gemini API failed");
+            String errorMessage = "Gemini API: Failed POST request with status code: " + geminiStatusCode;
+            LOGGER.severe(errorMessage);
+            throw new IOException(errorMessage);
         }
     }
 }

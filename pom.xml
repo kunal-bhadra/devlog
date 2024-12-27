@@ -13,7 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>21</maven.compiler.release>
-    <exec.mainClass>dev.kunalb.GitInsight</exec.mainClass>
+    <exec.mainClass>dev.kunalb.gitinsight.GitInsight</exec.mainClass>
   </properties>
 
   <dependencies>
@@ -33,9 +33,14 @@
       <version>3.4.1</version>
     </dependency>
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-      <version>1.5.13</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+      <version>3.4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>3.1.0</version>
     </dependency>
   </dependencies>
 
@@ -50,6 +55,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.2.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>3.4.0</version>
       </plugin>
     </plugins>
   </build>

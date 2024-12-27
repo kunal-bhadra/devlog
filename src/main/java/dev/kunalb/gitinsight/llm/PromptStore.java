@@ -1,4 +1,4 @@
-package dev.kunalb.llm;
+package dev.kunalb.gitinsight.llm;
 
 public class PromptStore {
 

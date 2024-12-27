@@ -1,8 +1,11 @@
-package dev.kunalb.git;
+package dev.kunalb.gitinsight.git;
+
+import org.springframework.stereotype.Service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Service
 public class GitSummaryCleaner {
 
     public String cleanGithubSummary(String text) {

@@ -1,7 +1,8 @@
-package dev.kunalb.git;
+package dev.kunalb.gitinsight.git;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+@Service
 public class GitSummaryGenerator {
 
     private static final Logger LOGGER = Logger.getLogger(

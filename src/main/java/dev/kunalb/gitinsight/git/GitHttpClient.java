@@ -1,6 +1,7 @@
-package dev.kunalb.git;
+package dev.kunalb.gitinsight.git;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.stereotype.Component;
 
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+@Component
 public class GitHttpClient {
 
     Dotenv dotenv = Dotenv.load();
@@ -25,24 +27,29 @@ public class GitHttpClient {
             .connectTimeout(Duration.ofSeconds(20))
             .build();
 
-    public String getUserEvents(String userName) throws URISyntaxException {
+    public String getUserEvents(String userName) {
         String githubKey = dotenv.get("GITHUB_ACCESS_KEY");
+        HttpRequest gitUserRequest = null;
+        HttpRequest gitEventsRequest = null;
+        try {
+            gitUserRequest = HttpRequest.newBuilder()
+                    .uri(new URI("https://api.github.com/users/"+userName))
+                    .header("Accept", "application/vnd.github+json")
+                    .header("X-GitHub-Api-Version", "2022-11-28")
+                    .header("Authorization", githubKey)
+                    .GET()
+                    .build();
 
-        HttpRequest gitUserRequest = HttpRequest.newBuilder()
-                .uri(new URI("https://api.github.com/users/"+userName))
-                .header("Accept", "application/vnd.github+json")
-                .header("X-GitHub-Api-Version", "2022-11-28")
-                .header("Authorization", githubKey)
-                .GET()
-                .build();
-
-        HttpRequest gitEventsRequest = HttpRequest.newBuilder()
-                .uri(new URI("https://api.github.com/users/"+userName+"/events/public?per_page=100"))
-                .header("Accept", "application/vnd.github+json")
-                .header("X-GitHub-Api-Version", "2022-11-28")
-                .header("Authorization", githubKey)
-                .GET()
-                .build();
+            gitEventsRequest = HttpRequest.newBuilder()
+                    .uri(new URI("https://api.github.com/users/"+userName+"/events/public?per_page=100"))
+                    .header("Accept", "application/vnd.github+json")
+                    .header("X-GitHub-Api-Version", "2022-11-28")
+                    .header("Authorization", githubKey)
+                    .GET()
+                    .build();
+        } catch (URISyntaxException e) {
+            LOGGER.severe("GitHub API URI Exception: " + e);
+        }
 
 
         CompletableFuture<HttpResponse<String>> gitUserAsyncResponse =  client.sendAsync(gitUserRequest, HttpResponse.BodyHandlers.ofString());

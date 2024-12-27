@@ -1,6 +1,6 @@
-package kunalb.dev.resources;
+package kunalb.dev.git;
 
-public class promptStore {
+public class PromptStore {
 
     public static final String systemPrompt = """
             "system_instruction": {

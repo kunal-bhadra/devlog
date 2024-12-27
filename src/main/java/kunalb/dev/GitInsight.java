@@ -1,12 +1,21 @@
 package kunalb.dev;
 
+import kunalb.dev.git.GitHttpClient;
+import kunalb.dev.git.GitSummaryCleaner;
+import kunalb.dev.git.GitSummaryGenerator;
+import kunalb.dev.llm.LlmHttpClient;
+import kunalb.dev.llm.LlmParser;
+import org.springframework.boot.SpringApplication;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class TrackUser {
+public class GitInsight {
+
     public static void main(String[] args) throws URISyntaxException, IOException {
         // Create objects
-        CurlHttpClient curlHttpClient = new CurlHttpClient();
+        GitHttpClient gitHttpClient = new GitHttpClient();
+        LlmHttpClient llmHttpClient = new LlmHttpClient();
         GitSummaryGenerator gitSummaryGenerator = new GitSummaryGenerator();
         GitSummaryCleaner gitSummaryCleaner = new GitSummaryCleaner();
         LlmParser llmParser = new LlmParser();
@@ -19,7 +28,7 @@ public class TrackUser {
         // Get User's recent events
         String githubUserName = args[0];
         String llmPersona = args[1];
-        String gitResponse = curlHttpClient.getUserEvents(githubUserName);
+        String gitResponse = gitHttpClient.getUserEvents(githubUserName);
 
         // Filter and summarise User stats
         String userSummary = gitSummaryGenerator.getUserSummary(gitResponse);
@@ -29,7 +38,7 @@ public class TrackUser {
         System.out.println(cleanSummary);
 
         // Call LLM
-        String output = curlHttpClient.getLlmResponse(llmPersona, cleanSummary);
+        String output = llmHttpClient.getLlmResponse(llmPersona, cleanSummary);
 
         // Parse LLM output
         String llmOutput = llmParser.extractTextFromLLMOutput(output);

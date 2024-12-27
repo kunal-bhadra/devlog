@@ -12,8 +12,8 @@ This is a CLI application to get the summary of a GitHub user's recent public ev
   - [x] New Members added count
   - [x] Open Issues count
   - [x] Issue Comment count and messages
-- [x] LLM Parsing of GitHub Summary with
-  - [x] Senior Software Architect persona
+- [x] LLM Parsing of GitHub Summary with the persona of
+  - [x] Senior Software Architect
   - [x] HR Recruiter
   - [x] Curious Partner
 - [ ] Deploy

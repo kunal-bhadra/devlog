@@ -33,29 +33,29 @@ public class GitSummaryGenerator {
         ArrayList<String> pullRequestComments = new ArrayList<>();
         int memberAddedCount = 0;
 
-        public String generateSummary(String repoName) {
+        public String generateSummary(String repoName, boolean shortSummary) {
             StringBuilder sb = new StringBuilder();
             if (starCount > 0)
                 sb.append(String.format("Event: Starred, Repo: %s, Count: %d\n", repoName, starCount));
             if (pushCommitCount > 0)
                 sb.append(String.format("Event: Pushed, Repo: %s, Count: %d\n", repoName, pushCommitCount));
-            if (!pushCommitMessages.isEmpty())
+            if (!pushCommitMessages.isEmpty() && !shortSummary)
                 sb.append(String.format("Commit Messages: %s\n", pushCommitMessages));
             if (issueOpenCount > 0)
                 sb.append(String.format("Event: Issue Opened, Repo: %s, Count: %d\n", repoName, issueOpenCount));
-            if (!issueOpenTitles.isEmpty())
+            if (!issueOpenTitles.isEmpty() && !shortSummary)
                 sb.append(String.format("Issue Titles: %s\n", issueOpenTitles));
             if (issueCommentCount > 0)
                 sb.append(String.format("Event: Commented, Repo: %s, Count: %d\n", repoName, issueCommentCount));
-            if (!issueCommentMessages.isEmpty())
+            if (!issueCommentMessages.isEmpty() && !shortSummary)
                 sb.append(String.format("Issue Comments: %s\n", issueCommentMessages));
             if (pullRequestOpenCount > 0)
                 sb.append(String.format("Event: PR Opened, Repo: %s, Count: %d\n", repoName, pullRequestOpenCount));
-            if (!pullRequestOpenTitles.isEmpty())
+            if (!pullRequestOpenTitles.isEmpty() && !shortSummary)
                 sb.append(String.format("PR Titles: %s\n", pullRequestOpenTitles));
             if (pullRequestCommentCount > 0)
                 sb.append(String.format("Event: Commented, Repo: %s, Count: %d\n", repoName, pullRequestCommentCount));
-            if (!pullRequestComments.isEmpty())
+            if (!pullRequestComments.isEmpty() && !shortSummary)
                 sb.append(String.format("PR Comments: %s\n", pullRequestComments));
             if (memberAddedCount > 0)
                 sb.append(String.format("Event: Member Added, Repo: %s, Count: %d\n", repoName, memberAddedCount));
@@ -178,16 +178,16 @@ public class GitSummaryGenerator {
 
     }
 
-    public static String generateSummary() {
+    public static String generateSummary(boolean shortSummary) {
         StringBuilder sb = new StringBuilder();
         for (String repoName : activitySummary.keySet()) {
             RepoActivity repoActivity = activitySummary.get(repoName);
-            sb.append(repoActivity.generateSummary(repoName));
+            sb.append(repoActivity.generateSummary(repoName, shortSummary));
         }
         return sb.toString();
     }
 
-    public String getUserSummary(String responseString) {
+    public String getUserSummary(String responseString, boolean shortSummary) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode root = mapper.readTree(responseString);
@@ -198,7 +198,7 @@ public class GitSummaryGenerator {
             } else {
                 updateActivitySummary(root);
             }
-            return generateSummary();
+            return generateSummary(shortSummary);
         } catch (IOException e) {
             LOGGER.severe("Error: Could not decode JSON response: " + e.getMessage());
         } catch (Exception e) {

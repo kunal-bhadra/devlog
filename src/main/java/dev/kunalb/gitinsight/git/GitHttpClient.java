@@ -36,14 +36,16 @@ public class GitHttpClient {
                     .uri(new URI("https://api.github.com/users/"+userName))
                     .header("Accept", "application/vnd.github+json")
                     .header("X-GitHub-Api-Version", "2022-11-28")
+                    .header("User-Agent", "kunal-bhadra")
                     .header("Authorization", githubKey)
                     .GET()
                     .build();
 
             gitEventsRequest = HttpRequest.newBuilder()
-                    .uri(new URI("https://api.github.com/users/"+userName+"/events/public?per_page=100"))
+                    .uri(new URI("https://api.github.com/users/"+userName+"/events/public?per_page=30"))
                     .header("Accept", "application/vnd.github+json")
                     .header("X-GitHub-Api-Version", "2022-11-28")
+                    .header("User-Agent", "kunal-bhadra")
                     .header("Authorization", githubKey)
                     .GET()
                     .build();
@@ -80,6 +82,8 @@ public class GitHttpClient {
         if (gitResultStatusCode == HttpURLConnection.HTTP_OK) {
             return gitResultBody;
         } else {
+            LOGGER.severe("GitHub API Request Status Code:" + gitResultStatusCode);
+            LOGGER.severe("GitHub API Request Response Body:" + gitResultBody);
             throw new RuntimeException("GET Request to GitHub API failed");
         }
     }

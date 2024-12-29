@@ -16,19 +16,18 @@ public class GitInsight {
         this.gitSummaryCleaner = gitSummaryCleaner;
     }
 
-    public String generateGitSummary(String gitUsername) {
+    public String getRecentEvents(String gitUsername) {
+        return gitHttpClient.getUserEvents(gitUsername);
+    }
 
-        // Get User's recent events
-        String gitResponse = gitHttpClient.getUserEvents(gitUsername);
-        if (gitResponse == null) {
-            return null;
-        }
+    public String getShortSummary(String gitUsername) {
+        String userEvents = getRecentEvents(gitUsername);
+        return gitSummaryGenerator.getUserSummary(userEvents, true);
+    }
 
-        // Filter and summarise User stats
-        String shortSummary = gitSummaryGenerator.getUserSummary(gitResponse, true);
-        String userSummary = gitSummaryGenerator.getUserSummary(gitResponse, false);
-
-        //Clean User Summary
-        return shortSummary;
+    public String getLongSummary(String gitUsername) {
+        String userEvents = getRecentEvents(gitUsername);
+        String longSummary = gitSummaryGenerator.getUserSummary(userEvents, false);
+        return gitSummaryCleaner.cleanGithubSummary(longSummary);
     }
 }

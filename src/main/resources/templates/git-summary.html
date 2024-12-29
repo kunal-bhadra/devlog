@@ -10,6 +10,12 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+       #llm-response {
+           margin-top: 20px;
+          padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -22,13 +28,28 @@
     <div th:if="${gitSummary.trim().isEmpty()}">
         <p>No activities to show</p>
     </div>
-
+    <div th:if="${not gitSummary.trim().isEmpty()}">
+        <form method="post" th:action="@{/api/llm}">
+            <label for="llmPersonaCode">Choose a persona:</label>
+            <select id="llmPersonaCode" name="llmPersonaCode">
+                <option value="SWE">Senior Software Architect</option>
+                <option value="HR">HR Recruiter</option>
+                <option value="PARTNER">Your Potential Partner</option>
+            </select>
+            <button type="submit">Generate LLM Summary</button>
+        </form>
+    </div>
 </div>
 
 <div th:if="${gitSummary == null}">
     <h1>User Not Found</h1>
-    <p>The GitHub username was invalid. Please try again.</p>
+    <p>The Git user was not found.</p>
 </div>
+<div id="llm-response" th:if="${llmResponse ne null and not llmResponse.isEmpty()}">
+    <p th:text="${llmResponse}"></p>
+</div>
+
+<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
 
 </body>
 </html>

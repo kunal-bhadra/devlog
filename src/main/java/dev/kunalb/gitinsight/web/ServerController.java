@@ -7,11 +7,11 @@ import dev.kunalb.gitinsight.llm.LlmInsight;
 import dev.kunalb.gitinsight.llm.LlmPersona;
 import dev.kunalb.gitinsight.llm.LlmPersonaEnum;
 import jakarta.validation.Valid;
-import org.apache.catalina.User;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class ServerController {
 
     private final GitInsight gitInsight;
@@ -22,14 +22,15 @@ public class ServerController {
         this.llmInsight = llmInsight;
     }
 
-
     @GetMapping("/")
-    String root() {
-        return "Hi Kunal!";
+    public String home(Model model) {
+        model.addAttribute("gitUser", new GitUser(""));
+        return "homepage";
     }
 
     @PostMapping("/api/git")
-    public String getGitSummary(@Valid @RequestBody GitUser gitUser) {
+    @ResponseBody
+    public String getGitSummary(@Valid @ModelAttribute GitUser gitUser) {
         String gitSummary = gitInsight.generateGitSummary(gitUser.gitUsername());
         if (gitSummary == null) {
             throw new UserNotFoundException();
@@ -38,6 +39,7 @@ public class ServerController {
     }
 
     @PostMapping("/api/llm")
+    @ResponseBody
     String getLlmSummary(@Valid @RequestBody LlmPersona llmPersonaCode) {
         String llmPersona = LlmPersonaEnum.fromCode(llmPersonaCode.llmPersonaCode());
         return llmInsight.getLlmSummary(gitInsight.getGitSummary(), llmPersona);

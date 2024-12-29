@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitInsight</title>
+</head>
+<body>
+    <h1>Get your GitHub summary</h1>
+    <form method="post" th:action="@{/api/git}" th:object="${gitUser}">
+        <label for="gitUsername"></label>
+        <input id="gitUsername" placeholder="Enter First Name" required type="text" th:field="*{gitUsername}"/>
+        <input type="submit" value="Submit!">
+    </form>
+</body>
+</html>

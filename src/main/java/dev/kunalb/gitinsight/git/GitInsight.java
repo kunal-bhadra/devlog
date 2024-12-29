@@ -5,18 +5,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GitInsight {
-    public String gitSummary = "";
+    private final GitHttpClient gitHttpClient;
+    private final GitSummaryGenerator gitSummaryGenerator;
+    private final GitSummaryCleaner gitSummaryCleaner;
 
-    public String getGitSummary() {
-        return gitSummary;
+
+    public GitInsight(GitHttpClient gitHttpClient, GitSummaryGenerator gitSummaryGenerator, GitSummaryCleaner gitSummaryCleaner) {
+        this.gitHttpClient = gitHttpClient;
+        this.gitSummaryGenerator = gitSummaryGenerator;
+        this.gitSummaryCleaner = gitSummaryCleaner;
     }
 
     public String generateGitSummary(String gitUsername) {
-
-        // Create objects
-        GitHttpClient gitHttpClient = new GitHttpClient();
-        GitSummaryGenerator gitSummaryGenerator = new GitSummaryGenerator();
-        GitSummaryCleaner gitSummaryCleaner = new GitSummaryCleaner();
 
         // Get User's recent events
         String gitResponse = gitHttpClient.getUserEvents(gitUsername);
@@ -29,7 +29,6 @@ public class GitInsight {
         String userSummary = gitSummaryGenerator.getUserSummary(gitResponse, false);
 
         //Clean User Summary
-        this.gitSummary = gitSummaryCleaner.cleanGithubSummary(userSummary);
         return shortSummary;
     }
 }

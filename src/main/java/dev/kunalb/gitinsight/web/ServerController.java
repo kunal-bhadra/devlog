@@ -2,7 +2,6 @@ package dev.kunalb.gitinsight.web;
 
 import dev.kunalb.gitinsight.git.GitInsight;
 import dev.kunalb.gitinsight.git.GitUser;
-import dev.kunalb.gitinsight.git.UserNotFoundException;
 import dev.kunalb.gitinsight.llm.LlmInsight;
 import dev.kunalb.gitinsight.llm.LlmPersona;
 import dev.kunalb.gitinsight.llm.LlmPersonaEnum;
@@ -29,20 +28,16 @@ public class ServerController {
     }
 
     @PostMapping("/api/git")
-    @ResponseBody
-    public String getGitSummary(@Valid @ModelAttribute GitUser gitUser) {
+    public String getGitSummary(@Valid @ModelAttribute GitUser gitUser, Model model) {
         String gitSummary = gitInsight.generateGitSummary(gitUser.gitUsername());
-        if (gitSummary == null) {
-            throw new UserNotFoundException();
-        }
-        return gitSummary;
+        model.addAttribute("gitSummary", gitSummary);
+        return "git-summary";
     }
 
-    @PostMapping("/api/llm")
-    @ResponseBody
-    String getLlmSummary(@Valid @RequestBody LlmPersona llmPersonaCode) {
-        String llmPersona = LlmPersonaEnum.fromCode(llmPersonaCode.llmPersonaCode());
-        return llmInsight.getLlmSummary(gitInsight.getGitSummary(), llmPersona);
-    }
-
+//    @PostMapping("/api/llm")
+//    @ResponseBody
+//    String getLlmSummary(@Valid @RequestBody LlmPersona llmPersonaCode) {
+//        String llmPersona = LlmPersonaEnum.fromCode(llmPersonaCode.llmPersonaCode());
+//        return llmInsight.getLlmSummary(gitInsight.getGitSummary(), llmPersona);
+//    }
 }

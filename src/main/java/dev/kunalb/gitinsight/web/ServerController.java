@@ -2,10 +2,12 @@ package dev.kunalb.gitinsight.web;
 
 import dev.kunalb.gitinsight.git.GitInsight;
 import dev.kunalb.gitinsight.git.GitUser;
+import dev.kunalb.gitinsight.git.UserNotFoundException;
 import dev.kunalb.gitinsight.llm.LlmInsight;
 import dev.kunalb.gitinsight.llm.LlmPersona;
 import dev.kunalb.gitinsight.llm.LlmPersonaEnum;
 import jakarta.validation.Valid;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +30,11 @@ public class ServerController {
 
     @PostMapping("/api/git")
     public String getGitSummary(@Valid @RequestBody GitUser gitUser) {
-        return gitInsight.generateGitSummary(gitUser.gitUsername());
+        String gitSummary = gitInsight.generateGitSummary(gitUser.gitUsername());
+        if (gitSummary == null) {
+            throw new UserNotFoundException();
+        }
+        return gitSummary;
     }
 
     @PostMapping("/api/llm")

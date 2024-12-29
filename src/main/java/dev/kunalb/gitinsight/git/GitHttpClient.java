@@ -61,7 +61,8 @@ public class GitHttpClient {
             throw new RuntimeException(e);
         }
         if (gitUserStatusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-            throw new IllegalArgumentException("Invalid GitHub Username");
+            LOGGER.warning("Invalid GitHub Username");
+            return null;
         }
 
 

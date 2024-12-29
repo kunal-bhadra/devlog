@@ -20,6 +20,9 @@ public class GitInsight {
 
         // Get User's recent events
         String gitResponse = gitHttpClient.getUserEvents(gitUsername);
+        if (gitResponse == null) {
+            return null;
+        }
 
         // Filter and summarise User stats
         String shortSummary = gitSummaryGenerator.getUserSummary(gitResponse, true);

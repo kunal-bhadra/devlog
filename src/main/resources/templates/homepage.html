@@ -24,12 +24,13 @@
                                 </div>
                             </div>
                             <button
-                                    class="w-100 btn btn-lg btn-primary"
+                                    class="w-100 btn btn-lg btn-light fw-bold"
                                     type="submit"
                                     hx-post="/api/git"
                                     hx-target="#raw-summary"
                                     hx-swap="innerHTML">
                                 Generate Summary
+                                <span class="htmx-indicator spinner-border spinner-border-sm" aria-hidden="true"></span>
                             </button>
                         </form>
                     </div>

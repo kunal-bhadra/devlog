@@ -21,10 +21,14 @@
 <body>
 
 <div th:if="${gitSummary != null}">
-    <h1>Git Summary:</h1>
-    <div th:each="line : ${gitSummary.split('(\r\n|\n)')}" th:if="${line.startsWith('Event:')}" class="event-container">
-        <p th:text="${line}"></p>
+
+    <div th:fragment="summary-list">
+        <h1>Git Summary:</h1>
+        <ul th:each="line : ${gitSummary.split('(\r\n|\n)')}" class="list-group list-group-flush">
+            <li class="list-group-item" th:text="${line}"></li>
+        </ul>
     </div>
+
     <div th:if="${gitSummary.trim().isEmpty()}">
         <p>No activities to show</p>
     </div>

@@ -1,16 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th lang="en" >
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitInsight</title>
+	<title>GitInsight</title>
 </head>
 <body>
-    <h1>Get your GitHub summary</h1>
-    <form method="post" th:action="@{/api/git}" th:object="${gitUser}">
-        <label for="gitUsername"></label>
-        <input id="gitUsername" placeholder="Enter First Name" required type="text" th:field="*{gitUsername}"/>
-        <input type="submit" value="Submit!">
-    </form>
+	<section layout:fragment="content">
+        <div class="container col-xxl-8 px-4 py-5">
+            <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+                <div id="raw-summary" class="col-10 col-sm-8 col-lg-6">
+                    &nbsp;
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">GitHub Insight</h1>
+                    <p class="lead">Generate a summary of your recent GitHub activity</p>
+                    <div class="mb-3">
+                        <form th:object="${gitUser}">
+                            <div class="mb-3">
+                                <label for="gitUsername" class="form-label">Enter your GitHub username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" id="form-git-url">https://github.com/</span>
+                                    <input th:field="*{gitUsername}" type="text" class="form-control" id="gitUsername" aria-describedby="form-git-url gitUsername">
+                                </div>
+                            </div>
+                            <button
+                                    class="w-100 btn btn-lg btn-primary"
+                                    type="submit"
+                                    hx-post="/api/git"
+                                    hx-target="#raw-summary"
+                                    hx-swap="innerHTML">
+                                Generate Summary
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</section>
 </body>
 </html>

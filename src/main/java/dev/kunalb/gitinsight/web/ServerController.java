@@ -11,8 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Logger;
+
 @Controller
 public class ServerController {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            Thread.currentThread().getStackTrace()[0].getClassName());
 
     private final GitInsight gitInsight;
     private final LlmInsight llmInsight;
@@ -30,13 +35,14 @@ public class ServerController {
 
     @PostMapping("/api/git")
     public String getGitSummary(@Valid @ModelAttribute GitUser gitUser, Model model, HttpSession session) {
+        LOGGER.info("Received request: " + gitUser.gitUsername());
         String shortSummary = gitInsight.getShortSummary(gitUser.gitUsername());
         String longSummary = gitInsight.getLongSummary(gitUser.gitUsername());
         model.addAttribute("gitSummary", shortSummary);
         model.addAttribute("llmPersonaCode", new LlmPersona(""));
         session.setAttribute("shortSummary", shortSummary);
         session.setAttribute("longSummary", longSummary);
-        return "git-summary";
+        return "summary :: summary-list";
     }
 
     @PostMapping("/api/llm")

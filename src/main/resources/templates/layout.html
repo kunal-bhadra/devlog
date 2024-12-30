@@ -10,18 +10,17 @@
 	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 	<!--Bootstrap Icons-->
 	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+	<!--Bootstrap JS-->
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 	<!--HTMX JS-->
 	<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/htmx-ext-response-targets/response-targets.js}"></script>
 </head>
 
 <body>
 	<!--/*@thymesVar id="message" type="java.lang.String"*/-->
 	<div th:if="${message}" class="alert alert-primary text-center" role="alert">
 		<span th:text="${message}"></span>
-	</div>
-	<!--/*@thymesVar id="error" type="java.lang.String"*/-->
-	<div th:if="${error}" class="alert alert-danger text-center" role="alert">
-		<span th:text="${error}"></span>
 	</div>
 	<section layout:fragment="content">
 		<p>Page content goes here</p>

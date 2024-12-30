@@ -3,35 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Git Summary</title>
-    <style>
-        .event-container {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-       #llm-response {
-           margin-top: 20px;
-          padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 <body>
 
 <div th:if="${gitSummary != null}">
 
     <div th:fragment="summary-list">
-        <h1>Git Summary:</h1>
-        <ul th:each="line : ${gitSummary.split('(\r\n|\n)')}" class="list-group list-group-flush">
-            <li class="list-group-item" th:text="${line}"></li>
-        </ul>
+        <div class="card border-light mb-3">
+            <div class="card-body">
+                <ul  class="list-group list-group-flush overflow-y-auto shadow" style="max-height: 40vh;">
+                    <li th:each="line : ${gitSummary.split('(\r\n|\n)')}" th:text="${line}" class="list-group-item clearfix" ></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <div th:if="${gitSummary.trim().isEmpty()}">
-        <p>No activities to show</p>
-    </div>
     <div th:if="${not gitSummary.trim().isEmpty()}">
         <form method="post" th:action="@{/api/llm}">
             <label for="llmPersonaCode">Choose a persona:</label>
@@ -45,10 +31,6 @@
     </div>
 </div>
 
-<div th:if="${gitSummary == null}">
-    <h1>User Not Found</h1>
-    <p>The Git user was not found.</p>
-</div>
 <div id="llm-response" th:if="${llmResponse ne null and not llmResponse.isEmpty()}">
     <p th:text="${llmResponse}"></p>
 </div>

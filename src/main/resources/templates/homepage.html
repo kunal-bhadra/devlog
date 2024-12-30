@@ -8,16 +8,16 @@
 	<section layout:fragment="content">
         <div class="container col-xxl-8 px-4 py-5">
             <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-                <div id="raw-summary" class="col-10 col-sm-8 col-lg-6">
+                <div id="llm-summary" class="col-10 col-sm-8 col-lg-6">
                     &nbsp;
                 </div>
                 <div class="col-lg-6">
-                    <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">GitHub Insight</h1>
-                    <p class="lead">Generate a summary of your recent GitHub activity</p>
+                    <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-center">GitHub Insight</h1>
+                    <p class="lead text-center">Generate a summary of your recent coding activity</p>
                     <div class="mb-3">
                         <form th:object="${gitUser}">
                             <div class="mb-3">
-                                <label for="gitUsername" class="form-label">Enter your GitHub username</label>
+                                <label for="gitUsername" class="form-label">Enter your username</label>
                                 <div class="input-group">
                                     <span class="input-group-text" id="form-git-url">https://github.com/</span>
                                     <input th:field="*{gitUsername}" type="text" class="form-control" id="gitUsername" aria-describedby="form-git-url gitUsername">
@@ -33,6 +33,9 @@
                                 <span class="htmx-indicator spinner-border spinner-border-sm" aria-hidden="true"></span>
                             </button>
                         </form>
+                    </div>
+                    <div id="raw-summary">
+                            &nbsp;
                     </div>
                 </div>
             </div>

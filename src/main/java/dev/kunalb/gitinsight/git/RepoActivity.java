@@ -19,29 +19,29 @@ class RepoActivity {
     public String generateSummary(String repoName, boolean shortSummary) {
         StringBuilder sb = new StringBuilder();
         if (starCount > 0)
-            sb.append(String.format("Event: Starred, Repo: %s, Count: %d\n", repoName, starCount));
+            sb.append(String.format("Event: Starred %d repo%s %s\n", starCount, starCount > 1 ? "s" : "", repoName));
         if (pushCommitCount > 0)
-            sb.append(String.format("Event: Pushed, Repo: %s, Count: %d\n", repoName, pushCommitCount));
+            sb.append(String.format("Event: Pushed %d commit%s to %s\n", pushCommitCount, pushCommitCount > 1 ? "s" : "", repoName));
         if (!pushCommitMessages.isEmpty() && !shortSummary)
             sb.append(String.format("Commit Messages: %s\n", pushCommitMessages));
         if (issueOpenCount > 0)
-            sb.append(String.format("Event: Issue Opened, Repo: %s, Count: %d\n", repoName, issueOpenCount));
+            sb.append(String.format("Event: Opened %d issue%s in %s\n", issueOpenCount, issueOpenCount > 1 ? "s" : "", repoName));
         if (!issueOpenTitles.isEmpty() && !shortSummary)
             sb.append(String.format("Issue Titles: %s\n", issueOpenTitles));
         if (issueCommentCount > 0)
-            sb.append(String.format("Event: Commented, Repo: %s, Count: %d\n", repoName, issueCommentCount));
+            sb.append(String.format("Event: Commented on %d issue%s in %s\n", issueCommentCount, issueCommentCount > 1 ? "s" : "", repoName));
         if (!issueCommentMessages.isEmpty() && !shortSummary)
             sb.append(String.format("Issue Comments: %s\n", issueCommentMessages));
         if (pullRequestOpenCount > 0)
-            sb.append(String.format("Event: PR Opened, Repo: %s, Count: %d\n", repoName, pullRequestOpenCount));
+            sb.append(String.format("Event: Opened %d pull request%s in %s\n", pullRequestOpenCount, pullRequestOpenCount > 1 ? "s" : "", repoName));
         if (!pullRequestOpenTitles.isEmpty() && !shortSummary)
             sb.append(String.format("PR Titles: %s\n", pullRequestOpenTitles));
         if (pullRequestCommentCount > 0)
-            sb.append(String.format("Event: Commented, Repo: %s, Count: %d\n", repoName, pullRequestCommentCount));
+            sb.append(String.format("Event: Commented %d time%s on pull requests in %s\n", pullRequestCommentCount, pullRequestCommentCount > 1 ? "s" : "", repoName));
         if (!pullRequestComments.isEmpty() && !shortSummary)
             sb.append(String.format("PR Comments: %s\n", pullRequestComments));
         if (memberAddedCount > 0)
-            sb.append(String.format("Event: Member Added, Repo: %s, Count: %d\n", repoName, memberAddedCount));
+            sb.append(String.format("Event: Added %d member%s to %s\n", memberAddedCount, memberAddedCount > 1 ? "s" : "", repoName));
 
         return sb.toString();
     }

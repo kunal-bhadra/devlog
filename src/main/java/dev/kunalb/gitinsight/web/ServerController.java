@@ -39,6 +39,7 @@ public class ServerController {
     @PostMapping("/api/git")
     public String getGitSummary(@Valid @ModelAttribute GitUser gitUser, BindingResult result, Model model, HttpSession session, HttpServletResponse response) {
 
+        // throw alert if blank username is submitted
         if (result.hasErrors()) {
             LOGGER.warning("Validation errors: " + result.getAllErrors());
             model.addAttribute("error", "Username cannot be blank.");

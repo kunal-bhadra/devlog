@@ -12,8 +12,10 @@
 			<div class="card border-light mb-3 shadow">
 				<div class="card-body">
 					<ul class="list-group list-group-flush overflow-y-auto" style="max-height: 40vh;">
-						<li th:each="line : ${gitSummary.split('(\r\n|\n)')}" th:text="${line}"
-							class="list-group-item clearfix"></li>
+						<li th:each="line : ${gitSummary.split('(\r\n|\n)')}"
+							th:if="${line.startsWith('Event:')}"
+							th:text="${#strings.replace(line, 'Event:', '')}"
+							class="list-group-item clearfix">
 					</ul>
 				</div>
 			</div>

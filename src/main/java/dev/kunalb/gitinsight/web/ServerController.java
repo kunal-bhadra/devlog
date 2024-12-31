@@ -4,19 +4,15 @@ import dev.kunalb.gitinsight.git.*;
 import dev.kunalb.gitinsight.llm.LlmInsight;
 import dev.kunalb.gitinsight.llm.LlmPersona;
 import dev.kunalb.gitinsight.llm.LlmPersonaEnum;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
@@ -42,19 +38,20 @@ public class ServerController {
 
     @PostMapping("/api/git")
     public String getGitSummary(@Valid @ModelAttribute GitUser gitUser, Model model, HttpSession session) throws NotFoundException, URISyntaxException, TimeoutException, GitHubGeneralException, GitHubRateLimitExceededException {
-        LOGGER.info("Received request: " + gitUser.gitUsername());
         String shortSummary = gitInsight.getShortSummary(gitUser.gitUsername());
         String longSummary = gitInsight.getLongSummary(gitUser.gitUsername());
         model.addAttribute("gitSummary", shortSummary);
         model.addAttribute("llmPersonaCode", new LlmPersona(""));
         session.setAttribute("shortSummary", shortSummary);
         session.setAttribute("longSummary", longSummary);
+        LOGGER.info("Completed Git Summary for: " + gitUser.gitUsername());
         return "summary :: summary-list";
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public String handleBlankUser(Exception ex, Model model) {
+        LOGGER.severe("Username cannot be blank: " + ex.getMessage());
         model.addAttribute("error", "Username cannot be blank");
         return "summary :: error";
     }
@@ -62,6 +59,7 @@ public class ServerController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({NotFoundException.class})
     public String handleInvalidUser(Exception ex, Model model) {
+        LOGGER.severe("GitHub user not found: " + ex.getMessage());
         model.addAttribute("error", "GitHub user not found");
         return "summary :: error";
     }
@@ -69,6 +67,7 @@ public class ServerController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({URISyntaxException.class})
     public String handleUriException(Exception ex, Model model) {
+        LOGGER.severe("GitHub API URL error: " + ex.getMessage());
         model.addAttribute("error", "GitHub API URL error");
         return "summary :: error";
     }
@@ -76,6 +75,7 @@ public class ServerController {
     @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
     @ExceptionHandler({TimeoutException.class})
     public String handleApiTimeoutException(Exception ex, Model model) {
+        LOGGER.severe("Request timed out: " + ex.getMessage());
         model.addAttribute("error", "Request timed out");
         return "summary :: error";
     }
@@ -83,6 +83,7 @@ public class ServerController {
     @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
     @ExceptionHandler({GitHubRateLimitExceededException.class, GitHubGeneralException.class})
     public String handleGitHubRateLimitException(Exception ex, Model model) {
+        LOGGER.severe("GitHub API Rate Limit Exceeded: " + ex.getMessage());
         model.addAttribute("error", ex.toString());
         return "summary :: error";
     }

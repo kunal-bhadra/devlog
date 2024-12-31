@@ -12,7 +12,6 @@ import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -67,7 +66,7 @@ public class GitHttpClient {
             throw new TimeoutException("GitHub API: User valid check error: " + e.getMessage());
         }
         if (gitResultStatusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-            throw new NotFoundException("Invalid GitHub Username: " + userName);
+            throw new NotFoundException(userName);
         }
 
 

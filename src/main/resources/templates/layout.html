@@ -5,7 +5,7 @@
 >
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--Bootstrap CSS-->
 	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 	<!--Bootstrap Icons-->
@@ -18,10 +18,6 @@
 </head>
 
 <body>
-	<!--/*@thymesVar id="message" type="java.lang.String"*/-->
-	<div th:if="${message}" class="alert alert-primary text-center" role="alert">
-		<span th:text="${message}"></span>
-	</div>
 	<section layout:fragment="content">
 		<p>Page content goes here</p>
 	</section>

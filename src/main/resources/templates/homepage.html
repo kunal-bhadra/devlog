@@ -1,55 +1,128 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout.html}" xmlns:th="http://www.thymeleaf.org" xmlns:hx-on="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th xmlns:layout layout:decorate="~{layout.html}">
 <head>
 	<title>GitInsight</title>
 </head>
 <body>
 	<section layout:fragment="content">
-        <div class="container col-xxl-8 px-4 py-4">
-            <div hx-ext="response-targets" class="row flex-lg-row-reverse align-items-center g-5 py-4">
-                <div id="any-errors">
-                    &nbsp;
-                </div>
-                <div id="llm-summary" class="col-10 col-sm-8 col-lg-6">
-                    &nbsp;
-                </div>
-                <div class="col-lg-6">
-                    <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-center">GitHub Insight</h1>
-                    <p class="lead text-center mb-5">Generate a summary of your recent coding activity</p>
-                    <div class="mb-3">
-                        <form th:object="${gitUser}">
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="form-git-url">https://github.com/</span>
-                                    <input
-                                        th:field="*{gitUsername}"
-                                        type="text"
-                                        class="form-control"
-                                        id="gitUsername"
-                                        placeholder="Enter your username"
-                                        aria-describedby="form-git-url gitUsername"
-                                    >
-                                </div>
-                            </div>
-                            <button
-                                    class="w-100 btn btn-lg btn-light fw-bold"
-                                    type="submit"
-                                    hx-post="/api/git"
-                                    hx-target="#raw-summary"
-                                    hx-target-404="#raw-summary"
-                                    hx-swap="innerHTML">
-                                Generate Summary
-                                <span class="htmx-indicator spinner-border spinner-border-sm" aria-hidden="true"></span>
-                            </button>
-                        </form>
-                    </div>
-                    <div id="raw-summary">
-                            &nbsp;
-                    </div>
-                </div>
-            </div>
-        </div>
+		<div class="container col-xxl-8 px-5 py-5 position-relative">
+				<div hx-ext="response-targets" class="row d-flex justify-content-center g-5 py-5">
+					<div class="col-lg-6">
+						<h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-center">GitHub Insight</h1>
+						<p class="lead text-center mb-5">Generate a summary of your recent coding activity</p>
+						<div class="mb-3">
+							<form th:object="${gitUser}">
+								<div class="mb-3">
+									<div class="input-group">
+										<span class="input-group-text" id="form-git-url">https://github.com/</span>
+										<input
+												th:field="*{gitUsername}"
+												type="text"
+												class="form-control"
+												id="gitUsername"
+												placeholder="Enter your username"
+												aria-describedby="form-git-url gitUsername"
+										>
+									</div>
+								</div>
+								<button
+										class="w-100 btn btn-lg btn-light fw-bold"
+										type="submit"
+										hx-post="/api/git"
+										hx-target="#quick-summary"
+										hx-target-error="#any-errors"
+										hx-swap="innerHTML">
+									Generate Summary
+									<span class="htmx-indicator spinner-border spinner-border-sm" aria-hidden="true"></span>
+								</button>
+							</form>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div id="quick-summary">
+							&nbsp;
+						</div>
+					</div>
+					<div id="any-errors" class="position-absolute top-0 start-50 translate-middle">
+						&nbsp;
+					</div>
+				</div>
+<!--			<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">-->
+<!--				<div class="col">-->
+<!--					<div id="llm-swe" class="card border-secondary mb-3">-->
+<!--						<div class="card-body">-->
+<!--							<h4 class="card-title d-flex align-items-center">-->
+<!--								<i class="bi bi-code-slash"></i>&nbsp;Senior Software Architect-->
+<!--							</h4>-->
+<!--							<div id="llm-swe-content">-->
+<!--								<p class="card-text">Evaluates a developer's technical abilities and the tangible impact-->
+<!--									of their code. It identifies both their strong suits and areas where they could-->
+<!--									enhance their skills further.</p>-->
+<!--								<a class="icon-link link-body-emphasis" href="#"-->
+<!--								   hx-post="/api/llm"-->
+<!--								   hx-indicator="#loader"-->
+<!--								   hx-vals='{"llmPersonaCode": "SWE"}'-->
+<!--								   hx-target="#llm-swe-content"-->
+<!--								   hx-swap="innerHTML">-->
+<!--									<i class="bi bi-stars"></i>-->
+<!--									Generate-->
+<!--									<span id="loader" class="htmx-indicator spinner-border spinner-border-sm" aria-hidden="true"></span>-->
+<!--								</a>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					<div class="card mb-4 rounded-3 shadow-sm">-->
+<!--						<div class="card-header py-3">-->
+<!--							<h4 class="my-0 fw-normal">Free</h4>-->
+<!--						</div>-->
+<!--						<div class="card-body">-->
+<!--							<h1 class="card-title pricing-card-title">$0<small class="text-body-secondary fw-light">/mo</small></h1>-->
+<!--							<ul class="list-unstyled mt-3 mb-4">-->
+<!--								<li>10 users included</li>-->
+<!--								<li>2 GB of storage</li>-->
+<!--								<li>Email support</li>-->
+<!--								<li>Help center access</li>-->
+<!--							</ul>-->
+<!--							<button type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for free</button>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col">-->
+<!--					<div class="card mb-4 rounded-3 shadow-sm">-->
+<!--						<div class="card-header py-3">-->
+<!--							<h4 class="my-0 fw-normal">Pro</h4>-->
+<!--						</div>-->
+<!--						<div class="card-body">-->
+<!--							<h1 class="card-title pricing-card-title">$15<small class="text-body-secondary fw-light">/mo</small></h1>-->
+<!--							<ul class="list-unstyled mt-3 mb-4">-->
+<!--								<li>20 users included</li>-->
+<!--								<li>10 GB of storage</li>-->
+<!--								<li>Priority email support</li>-->
+<!--								<li>Help center access</li>-->
+<!--							</ul>-->
+<!--							<button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col">-->
+<!--					<div class="card mb-4 rounded-3 shadow-sm border-primary">-->
+<!--						<div class="card-header py-3 text-bg-primary border-primary">-->
+<!--							<h4 class="my-0 fw-normal">Enterprise</h4>-->
+<!--						</div>-->
+<!--						<div class="card-body">-->
+<!--							<h1 class="card-title pricing-card-title">$29<small class="text-body-secondary fw-light">/mo</small></h1>-->
+<!--							<ul class="list-unstyled mt-3 mb-4">-->
+<!--								<li>30 users included</li>-->
+<!--								<li>15 GB of storage</li>-->
+<!--								<li>Phone and email support</li>-->
+<!--								<li>Help center access</li>-->
+<!--							</ul>-->
+<!--							<button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+		</div>
 	</section>
 </body>
 </html>

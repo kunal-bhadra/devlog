@@ -83,7 +83,7 @@ public class ServerController {
     @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
     @ExceptionHandler({GitHubRateLimitExceededException.class, GitHubGeneralException.class})
     public String handleGitHubRateLimitException(Exception ex, Model model) {
-        LOGGER.severe("GitHub API Rate Limit Exceeded: " + ex.getMessage());
+        LOGGER.severe("GitHub API Rate Limit Exceeded: " + ex.toString());
         model.addAttribute("error", ex.toString());
         return "summary :: error";
     }
@@ -94,13 +94,13 @@ public class ServerController {
         String longSummary = (String) session.getAttribute("longSummary");
         if (longSummary == null) {
             model.addAttribute("llmResponse", "No summary found, try again.");
-            return "git-summary";
+            return "summary :: error";
         }
 
         String llmPersonaName = LlmPersonaEnum.fromCode(llmPersona.llmPersonaCode());
         String llmResponse = llmInsight.getLlmSummary(longSummary, llmPersonaName);
         model.addAttribute("llmResponse", llmResponse);
         model.addAttribute("gitSummary", shortSummary);
-        return "git-summary";
+        return "summary :: llm-content";
     }
 }

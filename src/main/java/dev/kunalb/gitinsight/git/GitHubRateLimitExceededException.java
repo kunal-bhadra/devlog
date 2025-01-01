@@ -1,5 +1,10 @@
 package dev.kunalb.gitinsight.git;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
+
+import java.time.Duration;
+import java.time.Instant;
+
 public class GitHubRateLimitExceededException extends Exception {
     private final Long retryAfterSeconds;
     private final Long retryResetEpochSeconds;
@@ -12,30 +17,26 @@ public class GitHubRateLimitExceededException extends Exception {
         this.isPrimary = isPrimary;
     }
 
-    public Long getRetryAfterSeconds() {
-        return retryAfterSeconds;
-    }
-
-    public Long getRetryResetEpochSeconds() {
-        return retryResetEpochSeconds;
-    }
-
-    public boolean isPrimary() {
-        return isPrimary;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(getMessage());
         if (isPrimary) {
             if (retryResetEpochSeconds != null) {
-                sb.append(". Retry after ").append(java.time.Instant.ofEpochSecond(retryResetEpochSeconds));
+                Instant now = Instant.now();
+                Instant retryAfter = Instant.ofEpochSecond(retryResetEpochSeconds);
+                Duration retryDuration = Duration.between(now, retryAfter);
+                String retryDurationPart = DurationFormatUtils.formatDurationWords(retryDuration.toMillis(), true, true);
+                sb.append(". Retry after ").append(retryDurationPart);
             }
         } else {
             if (retryAfterSeconds != null) {
                 sb.append(". Retry after ").append(retryAfterSeconds).append(" seconds.");
             } else if (retryResetEpochSeconds != null) {
-                sb.append(". Retry after ").append(java.time.Instant.ofEpochSecond(retryResetEpochSeconds));
+                Instant now = Instant.now();
+                Instant retryAfter = Instant.ofEpochSecond(retryResetEpochSeconds);
+                Duration retryDuration = Duration.between(now, retryAfter);
+                String retryDurationPart = DurationFormatUtils.formatDurationWords(retryDuration.toMillis(), true, true);
+                sb.append(". Retry after ").append(retryDurationPart);
             } else {
                 sb.append(". Wait at least one minute before retrying.");
             }

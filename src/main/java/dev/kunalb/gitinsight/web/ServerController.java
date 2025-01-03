@@ -41,6 +41,7 @@ public class ServerController {
         String shortSummary = gitInsight.getShortSummary(gitUser.gitUsername());
         String longSummary = gitInsight.getLongSummary(gitUser.gitUsername());
         model.addAttribute("gitSummary", shortSummary);
+        model.addAttribute("gitUsername", gitUser.gitUsername());
         model.addAttribute("llmPersonaCode", new LlmPersona(""));
         session.setAttribute("shortSummary", shortSummary);
         session.setAttribute("longSummary", longSummary);

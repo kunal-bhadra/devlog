@@ -9,7 +9,14 @@
 	<div th:if="${gitSummary != null}">
 
 		<div th:fragment="summary-list">
-			<div class="card border-light mb-3 shadow">
+			<div class="card border-secondary mb-3 shadow">
+				<div class="card-header bg-secondary">
+					<div class="d-flex justify-content-between align-items-center">
+						<a href="https://github.com/${gitUsername}" target="_blank" class="text-decoration-none text-light fw-bold fs-5" th:href="@{'https://github.com/' + ${gitUsername}}" th:text="@{'@' + ${gitUsername}}">
+						</a>
+						<span class="fs-6">User, GitInsight</span>
+					</div>
+				</div>
 				<div class="card-body">
 					<ul class="list-group list-group-flush overflow-y-auto" style="max-height: 40vh;">
 						<li th:each="line : ${gitSummary.split('(\r\n|\n)')}"

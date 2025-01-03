@@ -81,10 +81,18 @@ public class ServerController {
     }
 
     @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
-    @ExceptionHandler({GitHubRateLimitExceededException.class, GitHubGeneralException.class})
+    @ExceptionHandler({GitHubRateLimitExceededException.class})
     public String handleGitHubRateLimitException(Exception ex, Model model) {
         LOGGER.severe("GitHub API Rate Limit Exceeded: " + ex.toString());
         model.addAttribute("error", ex.toString());
+        return "summary :: error";
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({GitHubGeneralException.class})
+    public String handleGitHubGeneralException(Exception ex, Model model) {
+        LOGGER.severe(ex.getMessage());
+        model.addAttribute("error", ex.getMessage());
         return "summary :: error";
     }
 

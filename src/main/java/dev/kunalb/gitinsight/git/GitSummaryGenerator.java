@@ -87,16 +87,20 @@ public class GitSummaryGenerator {
 
     }
 
-    public String generateSummary(boolean shortSummary) {
+    public String generateSummary(boolean shortSummary) throws GitHubGeneralException {
         StringBuilder sb = new StringBuilder();
         for (String repoName : activitySummary.keySet()) {
             RepoActivity repoActivity = activitySummary.get(repoName);
             sb.append(repoActivity.generateSummary(repoName, shortSummary));
         }
-        return sb.toString();
+        String summary = sb.toString();
+        if (summary.trim().isEmpty()) {
+            throw new GitHubGeneralException("No public events available for this user");
+        }
+        return summary;
     }
 
-    public String getUserSummary(String responseString, boolean shortSummary) {
+    public String getUserSummary(String responseString, boolean shortSummary) throws GitHubGeneralException {
         activitySummary.clear();
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -111,9 +115,7 @@ public class GitSummaryGenerator {
             return generateSummary(shortSummary);
         } catch (IOException e) {
             LOGGER.severe("Error: Could not decode JSON response: " + e.getMessage());
-        } catch (Exception e) {
-            LOGGER.severe("An unexpected error occurred: " + e.getMessage());
         }
-        return responseString;
+        return "";
     }
 }

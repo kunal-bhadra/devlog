@@ -108,6 +108,7 @@ public class ServerController {
         String llmPersonaName = LlmPersonaEnum.fromCode(llmPersona.llmPersonaCode());
         String llmResponse = llmInsight.getLlmSummary(longSummary, llmPersonaName);
         model.addAttribute("llmResponse", llmResponse);
+        LOGGER.info("Completed Smart Summary for: " + llmPersonaName);
         return "summary :: llm-content";
     }
 

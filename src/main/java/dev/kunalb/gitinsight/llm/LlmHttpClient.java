@@ -3,7 +3,6 @@ package dev.kunalb.gitinsight.llm;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;

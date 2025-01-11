@@ -99,7 +99,7 @@ public class ServerController {
     public String getLlmSummary(@ModelAttribute LlmPersona llmPersona, HttpSession session, Model model) throws SummaryNotFoundException, URISyntaxException, LlmGeneralException, TimeoutException {
         String longSummary = (String) session.getAttribute("longSummary");
         if (longSummary == null) {
-            throw new SummaryNotFoundException("Please generate your Coding Summary before getting your Smart Summary");
+            throw new SummaryNotFoundException("Please generate your Coding Summary before your Smart Summary");
         }
 
         String llmPersonaName = LlmPersonaEnum.fromCode(llmPersona.llmPersonaCode());

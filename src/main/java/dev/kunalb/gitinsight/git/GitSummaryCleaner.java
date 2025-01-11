@@ -24,7 +24,10 @@ public class GitSummaryCleaner {
         // 5. Remove any remaining whitespace at the beginning or end of lines that may be introduced
         String trimmedLines = trimLines(noNulls);
 
-        return trimmedLines.trim(); //trim the overall string
+        // 6. Replace double quotes with single quotes
+        String noDoubleQuotes = replaceDoubleQuotesWithSingle(trimmedLines);
+
+        return noDoubleQuotes.trim(); // trim the overall string
     }
 
     private static String removeHyperlinks(String text) {
@@ -62,5 +65,9 @@ public class GitSummaryCleaner {
         Pattern pattern = Pattern.compile("^\\s+|\\s+$", Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
         return matcher.replaceAll("");
+    }
+
+    private static String replaceDoubleQuotesWithSingle(String text) {
+        return text.replace("\"", "'");
     }
 }

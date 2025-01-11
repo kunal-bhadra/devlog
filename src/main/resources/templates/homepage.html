@@ -2,6 +2,10 @@
 <html lang="en" xmlns:th xmlns:layout layout:decorate="~{layout.html}">
 <head>
 	<title>GitInsight</title>
+	<link rel="apple-touch-icon" sizes="180x180" th:href="@{/img/apple-touch-icon.png}">
+	<link rel="icon" type="image/png" sizes="32x32" th:href="@{/img/favicon-32x32.png}">
+	<link rel="icon" type="image/png" sizes="16x16" th:href="@{/img/favicon-16x16.png}">
+	<link rel="manifest" th:href="@{/img/site.webmanifest}">
 </head>
 <body>
 	<section layout:fragment="content">
@@ -153,7 +157,7 @@
 										hx-target="#llm-swe-content"
 										hx-target-error="#any-errors"
 										hx-swap="innerHTML">
-									Generate
+									Generate!
 									<span class="htmx-indicator spinner-border spinner-border-sm"
 										  aria-hidden="true"></span>
 								</button>
@@ -172,14 +176,14 @@
 									communication skills. Assess their potential fit for a SWE role
 									and identify any potential red flags.</p>
 								<button
-										class="w-100 btn btn-lg btn-outline-light fw-bold"
+										class="w-100 btn btn-lg btn-light fw-bold"
 										type="submit"
 										hx-post="/api/llm"
 										hx-vals='{"llmPersonaCode": "HR"}'
 										hx-target="#llm-hr-content"
 										hx-target-error="#any-errors"
 										hx-swap="innerHTML">
-									Generate
+									Generate!
 									<span class="htmx-indicator spinner-border spinner-border-sm"
 										  aria-hidden="true"></span>
 								</button>
@@ -205,7 +209,7 @@
 										hx-target="#llm-partner-content"
 										hx-target-error="#any-errors"
 										hx-swap="innerHTML">
-									Generate
+									Generate!
 									<span class="htmx-indicator spinner-border spinner-border-sm"
 										  aria-hidden="true"></span>
 								</button>
@@ -214,6 +218,12 @@
 					</div>
 				</div>
 			</div>
+			<footer class="d-flex flex-wrap justify-content-center align-items-center py-3 my-4 border-top">
+				<a href="https://github.com/kunal-bhadra/git-insight" target="_blank" class="btn btn-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover d-inline-flex align-items-center gap-2 fs-5">
+					<i class="bi bi-github"></i>
+					Code Repo
+				</a>
+			</footer>
 		</div>
 	</section>
 </body>

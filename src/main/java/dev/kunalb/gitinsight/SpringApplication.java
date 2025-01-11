@@ -18,7 +18,7 @@ public class SpringApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080")
+                        .allowedOrigins("https://gitinsight.kunalb.dev", "http://gitinsight.kunalb.dev")
                         .allowedMethods("POST", "GET");
             }
         };

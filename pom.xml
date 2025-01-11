@@ -4,11 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>dev.kunalb</groupId>
-  <artifactId>devlog</artifactId>
+  <artifactId>gitinsight</artifactId>
   <version>1.0.0</version>
 
-  <name>devlog</name>
-  <url>http://devlog.kunalb.dev</url>
+  <name>gitinsight</name>
+  <url>http://gitinsight.kunalb.dev</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

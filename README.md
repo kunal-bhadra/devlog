@@ -1,6 +1,8 @@
-# Devlog
+# GitInsight
+GitInsight is a web-app that provides a quick summary of your recent GitHub activity along with a detailed Smart Summary. Quick Summary gives a view of your event count (commits, PRs, etc) on a repository level. Smart Summary is a very powerful way to get feedback on your coding self from multiple LLM powered personas.
 
-This is a CLI application to get the summary of a GitHub user's recent public events.
+## Usage
+
 
 ## Features
 - [x] Fetches all public events of a GitHub user
@@ -13,28 +15,45 @@ This is a CLI application to get the summary of a GitHub user's recent public ev
   - [x] Open Issues count
   - [x] Issue Comment count and messages
 - [x] LLM Parsing of GitHub Summary with the persona of
-  - [x] Senior Software Architect
+  - [x] Software Architect
   - [x] HR Recruiter
-  - [x] Curious Partner
-- [ ] Deploy
+  - [x] Potential Partner
+- [x] One-page UI for both Quick & Smart Summary
+- [x] V1.0.0 Release
 
-## Demo
+## Tech Stack
+- Frontend: Thymeleaf for templating HTML, Bootstrap for CSS, HTMX for minimal JS
+- Backend: Java, Maven, Spring Boot
+- LLM: Gemini API
+
+## Dev Setup
+Prerequisites: 
+- Java and Maven
+- [Create a GitHub API key](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+- [Create a Gemini API key](https://ai.google.dev/gemini-api/docs/api-key)
+
 ```bash
-# Run the program
-mvn clean compile exec:java -Dexec.args="kunal-bhadra"
-```
-```text
-# Output
-- Pushed 20 commits to kunal-bhadra/cli-task-tracker
-- Starred 1 repo cheahjs/free-llm-api-resources
-- Pushed 1 commit to kunal-bhadra/task-tracker-cli
-- Starred 1 repo linsomniac/spotify_to_ytmusic
+# Set Environment Variables
+export GITHUB_ACCESS_KEY=github_pat_xxx
+export GEMINI_ACCESS_KEY=xxxx
+
+# Run the app
+mvn spring-boot:run
+
+# Build JAR
+mvn clean package -DskipTests
 ```
 
-## Build Environment
-Java: `openjdk 21.0.5 2024-10-15`\
-Maven: `Apache Maven 3.6.3`
+## Contributing
+Contributions to GitInsight are welcome! If you'd like to contribute, please follow these steps:
+- Fork the Repository: Fork the project on GitHub. 
+- Create a Branch: Create a new branch for your feature or bug fix. 
+- Make Changes: Implement your changes and ensure they are well-tested. 
+- Submit a Pull Request: Submit a pull request with a detailed description of your changes.
+
+## License
+This code is licensed under the MIT license.
 
 ---
 
-This projects extends the functionality of a [coding challenge](https://roadmap.sh/projects/github-user-activity) to hopefully make it more useful and fun for everybody else.
+_This projects extends the functionality of a [coding challenge](https://roadmap.sh/projects/github-user-activity) in an attempt to make it more useful and accessible for everyone._

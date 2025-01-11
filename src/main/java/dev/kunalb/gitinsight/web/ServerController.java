@@ -1,10 +1,7 @@
 package dev.kunalb.gitinsight.web;
 
 import dev.kunalb.gitinsight.git.*;
-import dev.kunalb.gitinsight.llm.LlmInsight;
-import dev.kunalb.gitinsight.llm.LlmPersona;
-import dev.kunalb.gitinsight.llm.LlmPersonaEnum;
-import dev.kunalb.gitinsight.llm.SummaryNotFoundException;
+import dev.kunalb.gitinsight.llm.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import javassist.NotFoundException;
@@ -69,15 +66,15 @@ public class ServerController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({URISyntaxException.class})
     public String handleUriException(Exception ex, Model model) {
-        LOGGER.severe("GitHub API URL error: " + ex.getMessage());
-        model.addAttribute("error", "GitHub API URL error");
+        LOGGER.severe("API URL error: " + ex.getMessage());
+        model.addAttribute("error", "API URL error");
         return "summary :: error";
     }
 
     @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
     @ExceptionHandler({TimeoutException.class})
     public String handleApiTimeoutException(Exception ex, Model model) {
-        LOGGER.severe("Request timed out: " + ex.getMessage());
+        LOGGER.severe(ex.getMessage());
         model.addAttribute("error", "Request timed out");
         return "summary :: error";
     }
@@ -99,7 +96,7 @@ public class ServerController {
     }
 
     @PostMapping("/api/llm")
-    public String getLlmSummary(@ModelAttribute LlmPersona llmPersona, HttpSession session, Model model) throws SummaryNotFoundException {
+    public String getLlmSummary(@ModelAttribute LlmPersona llmPersona, HttpSession session, Model model) throws SummaryNotFoundException, URISyntaxException, LlmGeneralException, TimeoutException {
         String longSummary = (String) session.getAttribute("longSummary");
         if (longSummary == null) {
             throw new SummaryNotFoundException("Please generate your Coding Summary before getting your Smart Summary");
@@ -117,6 +114,14 @@ public class ServerController {
     public String handleSummaryNotFoundException(Exception ex, Model model) {
         LOGGER.severe(ex.getMessage());
         model.addAttribute("error", ex.getMessage());
+        return "summary :: error";
+    }
+
+    @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
+    @ExceptionHandler({LlmGeneralException.class})
+    public String handleLlmGeneralException(Exception ex, Model model) {
+        LOGGER.severe(ex.getMessage());
+        model.addAttribute("error", "Request timed out");
         return "summary :: error";
     }
 }

@@ -28,7 +28,7 @@ public class LlmHttpClient {
             .connectTimeout(Duration.ofSeconds(20))
             .build();
 
-    public String getLlmResponse(String persona, String summary) {
+    public String getLlmResponse(String persona, String summary) throws URISyntaxException, TimeoutException, LlmGeneralException {
         String geminiKey = dotenv.get("GEMINI_ACCESS_KEY");
         String systemPrompt = PromptStore.systemPrompt;
         String inputPrompt = String.format(PromptStore.inputPrompt, persona, summary);
@@ -41,7 +41,7 @@ public class LlmHttpClient {
                     .POST(HttpRequest.BodyPublishers.ofString(String.format("{ %s,%s }", systemPrompt, inputPrompt)))
                     .build();
         } catch (URISyntaxException e) {
-            LOGGER.severe("LLM API URI Exception: " + e);
+            throw new URISyntaxException(e.getMessage(), "Bad LLM API URI");
         }
 
 
@@ -52,18 +52,15 @@ public class LlmHttpClient {
             geminiStatusCode = geminiAsyncResponse.thenApply(HttpResponse::statusCode).get(15, TimeUnit.SECONDS);
             geminiResponse = geminiAsyncResponse.thenApply(HttpResponse::body).get(15, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            String errorMessage = "Gemini API Exception: " + e;
-            LOGGER.severe(errorMessage);
+            throw new TimeoutException("LLM API: Request error: " + e.getMessage());
         }
 
         if (geminiStatusCode == HttpURLConnection.HTTP_OK) {
             return geminiResponse;
         } else if (geminiStatusCode == HTTP_TOO_MANY_REQUESTS) {
-            LOGGER.severe("Gemini API: Exhausted completely; no more requests");
+            throw new LlmGeneralException("LLM Rate Limit exceeded. Please try after some time.");
         } else {
-            String errorMessage = "Gemini API: Failed POST request with status code: " + geminiStatusCode;
-            LOGGER.severe(errorMessage);
+            throw new LlmGeneralException("LLM API: Request Error: " + geminiStatusCode);
         }
-        return geminiResponse;
     }
 }

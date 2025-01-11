@@ -9,6 +9,15 @@
 	<link rel="icon" type="image/png" sizes="512x512" th:href="@{/img/android-chrome-512x512.png}">
 	<link rel="manifest" th:href="@{/img/site.webmanifest}">
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7Q561SBEMT"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'G-7Q561SBEMT');
+</script>
 <body>
 	<section layout:fragment="content">
 		<div hx-ext="response-targets" class="container px-5 py-5 position-relative">

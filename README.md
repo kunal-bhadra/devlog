@@ -2,7 +2,7 @@
 GitInsight is a web-app that provides a quick summary of your recent GitHub activity along with a detailed Smart Summary. Quick Summary gives a view of your event count (commits, PRs, etc) on a repository level. Smart Summary is a very powerful way to get feedback on your coding self from multiple LLM powered personas.
 
 ## Usage
-
+https://github.com/user-attachments/assets/e730f46f-e9f8-4a27-a59e-a744dd034a46
 
 ## Features
 - [x] Fetches all public events of a GitHub user

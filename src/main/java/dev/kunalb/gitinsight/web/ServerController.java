@@ -4,6 +4,7 @@ import dev.kunalb.gitinsight.git.*;
 import dev.kunalb.gitinsight.llm.LlmInsight;
 import dev.kunalb.gitinsight.llm.LlmPersona;
 import dev.kunalb.gitinsight.llm.LlmPersonaEnum;
+import dev.kunalb.gitinsight.llm.SummaryNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import javassist.NotFoundException;
@@ -31,8 +32,9 @@ public class ServerController {
     }
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
         model.addAttribute("gitUser", new GitUser(null));
+        session.setAttribute("longSummary", null);
         return "homepage";
     }
 
@@ -43,7 +45,6 @@ public class ServerController {
         model.addAttribute("gitSummary", shortSummary);
         model.addAttribute("gitUsername", gitUser.gitUsername());
         model.addAttribute("llmPersonaCode", new LlmPersona(""));
-        session.setAttribute("shortSummary", shortSummary);
         session.setAttribute("longSummary", longSummary);
         LOGGER.info("Completed Git Summary for: " + gitUser.gitUsername());
         return "summary :: summary-list";
@@ -98,18 +99,23 @@ public class ServerController {
     }
 
     @PostMapping("/api/llm")
-    public String getLlmSummary(@ModelAttribute LlmPersona llmPersona, HttpSession session, Model model) {
-        String shortSummary = (String) session.getAttribute("shortSummary");
+    public String getLlmSummary(@ModelAttribute LlmPersona llmPersona, HttpSession session, Model model) throws SummaryNotFoundException {
         String longSummary = (String) session.getAttribute("longSummary");
         if (longSummary == null) {
-            model.addAttribute("llmResponse", "No summary found, try again.");
-            return "summary :: error";
+            throw new SummaryNotFoundException("Please generate your Coding Summary before getting your Smart Summary");
         }
 
         String llmPersonaName = LlmPersonaEnum.fromCode(llmPersona.llmPersonaCode());
         String llmResponse = llmInsight.getLlmSummary(longSummary, llmPersonaName);
         model.addAttribute("llmResponse", llmResponse);
-        model.addAttribute("gitSummary", shortSummary);
         return "summary :: llm-content";
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({SummaryNotFoundException.class})
+    public String handleSummaryNotFoundException(Exception ex, Model model) {
+        LOGGER.severe(ex.getMessage());
+        model.addAttribute("error", ex.getMessage());
+        return "summary :: error";
     }
 }

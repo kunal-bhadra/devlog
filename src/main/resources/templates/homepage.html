@@ -5,11 +5,11 @@
 </head>
 <body>
 	<section layout:fragment="content">
-		<div class="container px-5 py-5 position-relative">
-			<div hx-ext="response-targets" class="row justify-content-md-center g-5 py-5">
+		<div hx-ext="response-targets" class="container px-5 py-5 position-relative">
+			<div class="row justify-content-md-center g-5 py-5">
 				<div class="col-md-6 form-column text-center">
 					<h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-center">GitHub Insight</h1>
-					<p class="lead text-center mb-5">Generate a summary of your recent coding activity</p>
+					<p class="lead text-center mb-5">Get a summary of your recent coding activity</p>
 					<div class="w-75 mx-auto">
 						<div class="mb-3">
 							<form th:object="${gitUser}">
@@ -126,11 +126,15 @@
 						</div>
 					</div>
 				</div>
-				<div id="any-errors" class="position-absolute top-0 start-50 translate-middle">
+				<div id="any-errors" class="position-fixed top-0 start-50 translate-middle" style="z-index: 9999;">
 					&nbsp;
 				</div>
 			</div>
-			<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+			<h2 class="display-6 fw-bold text-body-emphasis lh-1 mt-5 mb-3 text-center align-items-center">
+				<i class="bi bi-stars"></i>&nbsp;Smart Summary
+			</h2>
+			<p class="lead fs-4 text-center my-4">Analyse your activity through the lens of unique personas.</p>
+			<div class="row row-cols-1 row-cols-md-3 my-4">
 				<div class="col">
 					<div id="llm-swe" class="card border-secondary mb-4 rounded-3 shadow-sm">
 						<div class="card-body">
@@ -147,6 +151,7 @@
 										hx-post="/api/llm"
 										hx-vals='{"llmPersonaCode": "SWE"}'
 										hx-target="#llm-swe-content"
+										hx-target-error="#any-errors"
 										hx-swap="innerHTML">
 									Generate
 									<span class="htmx-indicator spinner-border spinner-border-sm"
@@ -172,6 +177,7 @@
 										hx-post="/api/llm"
 										hx-vals='{"llmPersonaCode": "HR"}'
 										hx-target="#llm-hr-content"
+										hx-target-error="#any-errors"
 										hx-swap="innerHTML">
 									Generate
 									<span class="htmx-indicator spinner-border spinner-border-sm"
@@ -197,6 +203,7 @@
 										hx-post="/api/llm"
 										hx-vals='{"llmPersonaCode": "PARTNER"}'
 										hx-target="#llm-partner-content"
+										hx-target-error="#any-errors"
 										hx-swap="innerHTML">
 									Generate
 									<span class="htmx-indicator spinner-border spinner-border-sm"

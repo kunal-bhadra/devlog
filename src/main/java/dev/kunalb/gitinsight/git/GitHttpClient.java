@@ -1,6 +1,5 @@
 package dev.kunalb.gitinsight.git;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import javassist.NotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -20,15 +19,13 @@ import java.util.concurrent.TimeoutException;
 @Component
 public class GitHttpClient {
 
-    Dotenv dotenv = Dotenv.load();
-
     private static final int TIMEOUT_SECONDS = 5;
     private final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(20))
             .build();
 
     public String getUserEvents(String userName) throws NotFoundException, URISyntaxException, TimeoutException, GitHubRateLimitExceededException, GitHubGeneralException {
-        String githubKey = dotenv.get("GITHUB_ACCESS_KEY");
+        String githubKey = System.getenv("GITHUB_ACCESS_KEY");
         System.out.println("API KEY: " + githubKey);
         HttpRequest gitUserRequest;
         HttpRequest gitEventsRequest;

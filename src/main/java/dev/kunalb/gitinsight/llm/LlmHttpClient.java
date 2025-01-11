@@ -1,6 +1,5 @@
 package dev.kunalb.gitinsight.llm;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Component;
 
 import java.net.HttpURLConnection;
@@ -19,7 +18,6 @@ import java.util.logging.Logger;
 @Component
 public class LlmHttpClient {
 
-    Dotenv dotenv = Dotenv.load();
     private static final Logger LOGGER = Logger.getLogger(
             Thread.currentThread().getStackTrace()[0].getClassName() );
     private static final int HTTP_TOO_MANY_REQUESTS = 429;
@@ -29,7 +27,7 @@ public class LlmHttpClient {
             .build();
 
     public String getLlmResponse(String persona, String summary) throws URISyntaxException, TimeoutException, LlmGeneralException {
-        String geminiKey = dotenv.get("GEMINI_ACCESS_KEY");
+        String geminiKey = System.getenv("GEMINI_ACCESS_KEY");
         String systemPrompt = PromptStore.systemPrompt;
         String inputPrompt = String.format(PromptStore.inputPrompt, persona, summary);
 

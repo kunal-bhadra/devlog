@@ -29,6 +29,7 @@ public class GitHttpClient {
 
     public String getUserEvents(String userName) throws NotFoundException, URISyntaxException, TimeoutException, GitHubRateLimitExceededException, GitHubGeneralException {
         String githubKey = dotenv.get("GITHUB_ACCESS_KEY");
+        System.out.println("API KEY: " + githubKey);
         HttpRequest gitUserRequest;
         HttpRequest gitEventsRequest;
         try {

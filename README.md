@@ -24,6 +24,7 @@ https://github.com/user-attachments/assets/e730f46f-e9f8-4a27-a59e-a744dd034a46
   - [x] Potential Partner
 - [x] One-page UI for both Quick & Smart Summary
 - [x] V1.0.0 Release
+- [x] Responsive UI for Phones
 
 ## Tech Stack
 - Frontend: Thymeleaf for templating HTML, Bootstrap for CSS, HTMX for minimal JS

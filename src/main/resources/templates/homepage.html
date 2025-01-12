@@ -62,14 +62,15 @@
 										hx-post="/api/git"
 										hx-target="#quick-summary"
 										hx-target-error="#any-errors"
-										hx-swap="innerHTML">
+										hx-swap="innerHTML"
+										data-umami-event="Quick Summary">
 									Generate Summary
 									<span class="htmx-indicator spinner-border spinner-border-sm" aria-hidden="true"></span>
 								</button>
 							</form>
 						</div>
 					</div>
-					<a href="https://twitter.com/itskunalbhadra" target="_blank" class="btn btn-secondary d-inline-flex align-items-center gap-2 mt-4 fw-medium">
+					<a href="https://twitter.com/itskunalbhadra" target="_blank" class="btn btn-secondary d-inline-flex align-items-center gap-2 mt-4 fw-medium" data-umami-event="Bio Clicked">
 						<i class="bi bi-twitter-x"></i>
 						Built by @itskunalbhadra
 					</a>
@@ -180,7 +181,8 @@
 										hx-vals='{"llmPersonaCode": "SWE"}'
 										hx-target="#llm-swe-content"
 										hx-target-error="#any-errors"
-										hx-swap="innerHTML">
+										hx-swap="innerHTML"
+										data-umami-event="SWE Summary">
 									Analyse!
 									<span class="htmx-indicator spinner-border spinner-border-sm"
 										  aria-hidden="true"></span>
@@ -204,7 +206,8 @@
 										hx-vals='{"llmPersonaCode": "HR"}'
 										hx-target="#llm-hr-content"
 										hx-target-error="#any-errors"
-										hx-swap="innerHTML">
+										hx-swap="innerHTML"
+										data-umami-event="HR Summary">
 									Analyse!
 									<span class="htmx-indicator spinner-border spinner-border-sm"
 										  aria-hidden="true"></span>
@@ -228,7 +231,8 @@
 										hx-vals='{"llmPersonaCode": "PARTNER"}'
 										hx-target="#llm-partner-content"
 										hx-target-error="#any-errors"
-										hx-swap="innerHTML">
+										hx-swap="innerHTML"
+										data-umami-event="GF Summary">
 									Analyse!
 									<span class="htmx-indicator spinner-border spinner-border-sm"
 										  aria-hidden="true"></span>
@@ -239,7 +243,7 @@
 				</div>
 			</div>
 			<footer class="d-flex flex-wrap justify-content-center align-items-center py-3 my-5 border-top">
-				<a href="https://github.com/kunal-bhadra/git-insight" target="_blank" class="btn btn-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover d-inline-flex align-items-center gap-2 fs-5">
+				<a href="https://github.com/kunal-bhadra/git-insight" target="_blank" class="btn btn-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover d-inline-flex align-items-center gap-2 fs-5" data-umami-event="Repo Clicked">
 					<i class="bi bi-github"></i>
 					Code Repo
 				</a>

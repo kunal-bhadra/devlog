@@ -39,7 +39,7 @@ public class GitHttpClient {
                     .build();
 
             gitEventsRequest = HttpRequest.newBuilder()
-                    .uri(new URI("https://api.github.com/users/" + userName + "/events/public?per_page=30"))
+                    .uri(new URI("https://api.github.com/users/" + userName + "/events/public?per_page=100"))
                     .header("Accept", "application/vnd.github+json")
                     .header("X-GitHub-Api-Version", "2022-11-28")
                     .header("User-Agent", "kunal-bhadra")
